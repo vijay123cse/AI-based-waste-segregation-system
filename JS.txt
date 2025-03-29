@@ -1,0 +1,67 @@
+const imageUpload = document.getElementById('image-upload');
+const imagePreview = document.getElementById('image-preview');
+const resultText = document.getElementById('result-text');
+const loadingIndicator = document.getElementById('loading-indicator');
+
+imageUpload.addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = 'block';
+            loadingIndicator.style.display = 'block'; // Show loading indicator
+            resultText.textContent = "";
+
+            // Simulate AI processing (replace with your actual API call)
+            simulateAIProcessing(file);
+
+        };
+        reader.readAsDataURL(file);
+    } else {
+        imagePreview.style.display = 'none';
+        resultText.textContent = '';
+        loadingIndicator.style.display = 'none';
+    }
+});
+
+function simulateAIProcessing(file) {
+    // Simulate sending the image to an AI model and receiving a result.
+    // In a real application, you would use fetch or XMLHttpRequest to send
+    // the image to your server and get the AI's response.
+    setTimeout(() => {
+        const randomResult = Math.random();
+        let wasteType = '';
+
+        if (randomResult < 0.3) {
+            wasteType = 'Recyclable (Plastic)';
+        } else if (randomResult < 0.6) {
+            wasteType = 'Organic Waste';
+        } else {
+            wasteType = 'General Waste';
+        }
+
+        resultText.textContent = 'Detected Waste Type: ' + wasteType;
+        loadingIndicator.style.display = 'none'; // Hide loading indicator
+        //In real implementation use fetch to send the image to backend.
+        /*
+        const formData = new FormData();
+        formData.append('image', file);
+        fetch('/your_api_endpoint', { //Replace '/your_api_endpoint'
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            resultText.textContent = 'Detected Waste Type: ' + data.wasteType;
+            loadingIndicator.style.display = 'none';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            resultText.textContent = 'Error processing image.';
+            loadingIndicator.style.display = 'none';
+        });
+        */
+    }, 1500); // Simulate processing time
+}
+
